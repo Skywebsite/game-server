@@ -22,26 +22,8 @@ const allowedOrigins = process.env.CORS_ORIGIN
 
 const corsConfig = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) {
-      return callback(null, true);
-    }
-    // Always allow localhost origins for development/testing
-    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
-      return callback(null, true);
-    }
-    // In development, allow all origins if CORS_ORIGIN is not set
-    if (isDevelopment && allowedOrigins.length === 0) {
-      return callback(null, true);
-    }
-    // Check if origin is in allowed list
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      // Log for debugging
-      console.log(`CORS: Origin ${origin} not in allowed list:`, allowedOrigins);
-      callback(new Error('Not allowed by CORS'));
-    }
+    // Allow all origins
+    callback(null, true);
   },
   credentials: false,
   methods: ['GET', 'POST', 'OPTIONS'] as string[],
